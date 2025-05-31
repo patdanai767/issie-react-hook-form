@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Navbar/Sidebar";
-import { Mars, Venus } from "lucide-react";
+import { Mars, Venus, Eye, EyeOff } from "lucide-react";
 
 const schema = z.object({
   displayName: z.string().optional(),
@@ -21,6 +21,7 @@ const schema = z.object({
 
 function App() {
   const [data, setData] = useState({});
+  const [showPwd, setShowPwd] = useState(false);
 
   const {
     register,
@@ -69,17 +70,20 @@ function App() {
                   <div className="space-x-3 flex">
                     <label>DisplayName</label>
                     <input
-                      className="bg-gray-100 text-sm rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                      className="p-2 border-1 border-slate-400 bg-gray-100 text-sm rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                       type="text"
                       placeholder="displayname"
                       {...register("displayName")}
                     />
                   </div>
                   <div className="space-x-3 flex">
-                    <label>Username</label>
+                    <div>
+                      <label>Username</label>
+                      <span className="text-red-500">*</span>
+                    </div>
                     <div className="w-full">
                       <input
-                        className="bg-gray-100 text-sm rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                        className="p-2 border-1 border-slate-400 bg-gray-100 text-sm rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                         type="text"
                         placeholder="username"
                         {...register("username")}
@@ -92,10 +96,13 @@ function App() {
                     </div>
                   </div>
                   <div className="space-x-3 flex">
-                    <label className="whitespace-nowrap">Phone Number</label>
+                    <div>
+                      <label className="whitespace-nowrap">Phone Number</label>
+                      <span className="text-red-500">*</span>
+                    </div>
                     <div className="w-full">
                       <input
-                        className="text-sm bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                        className="p-2 border-1 border-slate-400 text-sm bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                         type="text"
                         placeholder="0001112223"
                         {...register("phoneNumber")}
@@ -108,10 +115,13 @@ function App() {
                     </div>
                   </div>
                   <div className="space-x-3 flex">
-                    <label>Email</label>
+                    <div>
+                      <label>Email</label>
+                      <span className="text-red-500">*</span>
+                    </div>
                     <div className="w-full">
                       <input
-                        className="bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                        className="p-2 border-1 border-slate-400 bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                         type="email"
                         placeholder="example@gmail.com"
                         {...register("email")}
@@ -122,13 +132,26 @@ function App() {
                     </div>
                   </div>
                   <div className="space-x-3 flex">
-                    <label>Password</label>
+                    <div>
+                      <label>Password</label>
+                      <span className="text-red-500">*</span>
+                    </div>
                     <div className="w-full">
-                      <input
-                        className="bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
-                        type="password"
-                        {...register("password")}
-                      />
+                      <div className="relative">
+                        <input
+                          className="p-2 border-1 border-slate-400 bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                          type={showPwd ? "text" : "password"}
+                          placeholder="Enter your password"
+                          {...register("password")}
+                        />
+                        <button
+                          className="absolute top-1 left-[90%] sm:left-[90%] md:left-[94%] rounded-full cursor-pointer hover:bg-slate-200 p-[5px]"
+                          type="button"
+                          onClick={() => setShowPwd(!showPwd)}
+                        >
+                          {showPwd ? <Eye size={20} /> : <EyeOff size={20} />}
+                        </button>
+                      </div>
                       {errors.password && (
                         <p className="text-red-500">
                           {errors.password.message}
@@ -143,10 +166,10 @@ function App() {
                 <div className="grid grid-cols-1 gap-4 mt-4">
                   <div className="space-x-3 flex items-center">
                     <label>Gender</label>
-                    <div className="flex w-full border-brown border-2">
+                    <div className="flex w-full rounded-full">
                       <input {...register("gender")} hidden />
                       <button
-                        className={`bg-gray-100 w-full px-2 cursor-pointer justify-items-center border-r-2 border-brown py-1 ${
+                        className={`bg-gray-100 w-full px-2 cursor-pointer justify-items-center rounded-es-full rounded-tl-full border-r-1 border-slate-400 py-1 ${
                           selectGender === "male" ? "bg-sky-100" : ""
                         }`}
                         type="button"
@@ -155,7 +178,7 @@ function App() {
                         <Mars size={20} color="#4c93e0" />
                       </button>
                       <button
-                        className={`bg-gray-100 w-full px-2 cursor-pointer justify-items-center ${
+                        className={`bg-gray-100 w-full px-2 cursor-pointer rounded-tr-full rounded-br-full justify-items-center ${
                           selectGender === "female" ? "bg-pink-200" : ""
                         }`}
                         type="button"
@@ -168,7 +191,7 @@ function App() {
                   <div className="space-x-3 flex">
                     <label>Theme</label>
                     <select
-                      className="text-sm bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                      className="p-2 border-1 border-slate-400 text-sm bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                       {...register("theme")}
                     >
                       <option value="light">Light</option>
@@ -178,7 +201,7 @@ function App() {
                   <div className="space-x-3 flex">
                     <label>Region</label>
                     <select
-                      className="bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                      className="p-2 border-1 border-slate-400 bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                       {...register("region")}
                     >
                       <option value="asia">Asia</option>
@@ -192,7 +215,7 @@ function App() {
                   <div className="space-x-3 flex">
                     <label>Birthday</label>
                     <input
-                      className="bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                      className="p-2 border-1 border-slate-400 bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                       type="date"
                       {...register("birthday", {
                         setValueAs: (value) => new Date(value),
@@ -204,7 +227,7 @@ function App() {
                       Relationship Status
                     </label>
                     <select
-                      className="bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
+                      className="p-2 border-1 border-slate-400 bg-gray-100 rounded w-full focus:outline-none focus:ring-2 focus:ring-green px-2"
                       {...register("status")}
                     >
                       <option value="single">Single</option>
